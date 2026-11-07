@@ -105,6 +105,7 @@ end
 # crazy_transient           1 or 0; collapse old prompts (default 1)
 # crazy_right_prompt        1 or 0; show the right prompt (default 1)
 # crazy_clock               1 or 0; show the clock in the right prompt (default 1)
+# crazy_duration_ignore     commands without duration (default nvim gg yazi ranger tig)
 # crazy_palette             palette name (default neon)
 # crazy_compact             on, off or auto (default auto)
 # crazy_compact_width       auto: compact below this many columns (default 80)
@@ -139,8 +140,12 @@ function crazy -d "Configure the crazy prompt theme"
                     return 1
             end
         case duration
+            if test "$argv[2]" = ignore
+                __crazy_ignore_cmd $argv[3..-1]
+                return
+            end
             if not string match -qr '^\d+$' -- "$argv[2]"
-                echo "crazy: use 'crazy duration <ms>'" >&2
+                echo "crazy: use 'crazy duration <ms>' or 'crazy duration ignore ...'" >&2
                 return 1
             end
             set -U crazy_duration_threshold $argv[2]
@@ -193,6 +198,8 @@ function crazy -d "Configure the crazy prompt theme"
             echo "usage: crazy lines [1|2]          set or toggle prompt lines"
             echo "       crazy transient on|off     collapse old prompts"
             echo "       crazy duration <ms>        min command time to show"
+            echo "       crazy duration ignore [add|rm <cmd>...|reset]"
+            echo "                                  commands without duration"
             echo "       crazy right on|off         show the right prompt"
             echo "       crazy clock on|off         show the clock"
             echo "       crazy palette [name]       list palettes or set one"

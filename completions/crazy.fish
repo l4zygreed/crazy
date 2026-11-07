@@ -26,3 +26,20 @@ complete -c crazy -n "__crazy_complete_arg compact" -a on -d "Always compact"
 complete -c crazy -n "__crazy_complete_arg compact" -a off -d "Never compact"
 complete -c crazy -n "__crazy_complete_arg compact" -a auto -d "Compact in narrow windows (default)"
 complete -c crazy -n "__crazy_complete_arg compact" -a max -d "Max name length"
+complete -c crazy -n "__crazy_complete_arg duration" -a ignore -d "Commands without duration"
+
+# crazy duration ignore add|rm|reset
+function __crazy_complete_ignore -a sub
+    set -l tokens (commandline -opc)
+    test "$tokens[2]" = duration; and test "$tokens[3]" = ignore; or return 1
+    if test -z "$sub"
+        test (count $tokens) -eq 3
+    else
+        test (count $tokens) -ge 4; and test "$tokens[4]" = $sub
+    end
+end
+complete -c crazy -n "__crazy_complete_ignore" -a add -d "Add commands"
+complete -c crazy -n "__crazy_complete_ignore" -a rm -d "Remove commands"
+complete -c crazy -n "__crazy_complete_ignore" -a reset -d "Restore the default list"
+complete -c crazy -n "__crazy_complete_ignore add" -a "(__fish_complete_command)"
+complete -c crazy -n "__crazy_complete_ignore rm" -a "(__crazy_ignore_list)"

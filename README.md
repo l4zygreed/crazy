@@ -35,6 +35,10 @@ crazy lines 2          # two-line prompt (default)
 crazy lines            # toggle
 crazy transient off    # keep full prompts in the history (default: on)
 crazy duration 60000   # show command duration above 1 min (default: 120000 ms = 2 min)
+crazy duration ignore              # list commands without duration
+crazy duration ignore add vim man  # add commands
+crazy duration ignore rm tig       # remove commands
+crazy duration ignore reset        # default: nvim gg yazi ranger tig
 crazy clock off        # hide the clock (default: on)
 crazy right off        # hide the whole right prompt (default: on)
 crazy palette          # list palettes with color swatches
@@ -47,7 +51,16 @@ crazy compact max 12   # max dir and branch name length in compact mode (default
 
 Tab completion works for all `crazy` commands and values.
 
-Settings are universal variables: `crazy_prompt_lines`, `crazy_transient`, `crazy_duration_threshold`, `crazy_clock`, `crazy_right_prompt`, `crazy_palette`, `crazy_compact`, `crazy_compact_width`, `crazy_compact_max`.
+Settings are universal variables: `crazy_prompt_lines`, `crazy_transient`, `crazy_duration_threshold`, `crazy_duration_ignore`, `crazy_clock`, `crazy_right_prompt`, `crazy_palette`, `crazy_compact`, `crazy_compact_width`, `crazy_compact_max`.
+
+## Duration of interactive programs
+
+The theme does not show the duration after interactive programs, for example editors and file managers. The ignore list matches the program name, so these command lines also match:
+
+- `/opt/homebrew/bin/nvim file`, `sudo nvim file`, `EDITOR=x nvim file`
+- Aliases: `alias y=yazi` makes `y` match `yazi`.
+
+A function that only calls a program inside its body does not match. Add the function name to the list.
 
 ## Compact mode
 
