@@ -356,6 +356,9 @@ end
 
 function __crazy_path_panels -a in_git
     set -l name (basename (prompt_pwd))
+    if test $name = "~"
+      set name " ~"
+    end
 
     if test "$__crazy_compact" = 1
         __crazy_panel $__crazy_c_dir $__crazy_c_ink (__crazy_shorten $name)
